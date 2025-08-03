@@ -156,8 +156,8 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
                       index === 0 ? 'text-[#7EE081]' : 'text-slate-50'
                     }`}
                   >
-                    <div>{company.ticker}</div>
-                    <div className="text-xs font-normal text-slate-400 mt-1 truncate max-w-[120px]">
+                    <div className="text-center">{company.ticker}</div>
+                    <div className="text-xs font-normal text-slate-400 mt-1 text-center">
                       {company.name}
                     </div>
                   </th>

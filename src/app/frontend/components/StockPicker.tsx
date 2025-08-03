@@ -44,9 +44,15 @@ export default function Sidebar({
         };
     }, []);
 
-
     return (
-        <div className="w-full bg-[#1a1a1a] border-b border-[#333333] p-4">
+        <div
+            className="w-full bg-[#1a1a1a] border-b border-[#333333] p-4"
+            style={{
+                position: 'sticky',
+                top: 0,
+                zIndex: 1000
+            }}
+        >
             <div className="flex items-center gap-6">
                 {/* Add Stock Button */}
                 <div className="relative" ref={dropdownRef}>

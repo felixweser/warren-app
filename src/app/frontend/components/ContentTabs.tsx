@@ -57,7 +57,7 @@ export default function ContentTabs({ currentStock }: ContentTabsProps) {
     return (
         <div className="flex flex-col h-full">
             {/* Tab Navigation */}
-            <div className="bg-[#1a1a1a]  p-4">
+            <div className="bg-[#1a1a1a]  px-8 my-4">
                 <div className="flex items-center gap-2 flex-wrap">
                     {tabs.map((tab) => (
                         <button

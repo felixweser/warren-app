@@ -107,7 +107,7 @@ export default function CompanyInfo() {
                 {currentStock ? (
                     <>
                         {/* Company header */}
-                        <div className="bg-[#1a1a1a]  p-6">
+                        <div className="bg-[#1a1a1a]  px-8 my-4">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <h1 className="text-3xl font-bold text-white mb-2">
