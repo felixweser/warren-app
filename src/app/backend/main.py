@@ -966,3 +966,90 @@ def get_cash_flow_range(
         "periods_returned": len(result_periods),
         "periods": result_periods
     }
+
+@app.get("/company-metrics/{ticker}")
+def get_company_metrics(ticker: str):
+    """Get key financial metrics for company overview"""
+    conn = get_connection()
+    cur = conn.cursor()
+    
+    # Get the latest annual data for calculations
+    latest = get_latest_period(conn, ticker, "annual")
+    if not latest:
+        raise HTTPException(status_code=404, detail=f"No annual data found for {ticker}")
+    
+    fiscal_year, fiscal_period, _ = latest
+    
+    # Get current year data
+    cur.execute("""
+        SELECT s.tag, s.value, s.unit
+        FROM statements s
+        JOIN companies c ON c.id = s.company_id
+        WHERE c.ticker = %s AND s.fiscal_year = %s AND s.fiscal_period = %s
+    """, (ticker.upper(), fiscal_year, fiscal_period))
+    
+    current_data = {tag: float(value) for tag, value, unit in cur.fetchall()}
+    
+    # Get previous year data for growth calculations
+    prev_year = fiscal_year - 1
+    cur.execute("""
+        SELECT s.tag, s.value, s.unit
+        FROM statements s
+        JOIN companies c ON c.id = s.company_id
+        WHERE c.ticker = %s AND s.fiscal_year = %s AND s.fiscal_period = 'FY'
+    """, (ticker.upper(), prev_year))
+    
+    prev_data = {tag: float(value) for tag, value, unit in cur.fetchall()}
+    
+    cur.close()
+    conn.close()
+    
+    # Calculate metrics
+    metrics = {}
+    
+    # Revenue and Revenue Growth
+    revenue_current = current_data.get('RevenueFromContractWithCustomerExcludingAssessedTax', 0)
+    revenue_prev = prev_data.get('RevenueFromContractWithCustomerExcludingAssessedTax', 0)
+    if revenue_prev > 0:
+        revenue_growth = ((revenue_current - revenue_prev) / revenue_prev) * 100
+    else:
+        revenue_growth = 0
+    
+    metrics['revenue'] = revenue_current
+    metrics['revenue_growth'] = revenue_growth
+    
+    # Free Cash Flow (Operating Cash Flow - Capital Expenditures)
+    operating_cf = current_data.get('NetCashProvidedByUsedInOperatingActivities', 0)
+    capex = current_data.get('PaymentsToAcquirePropertyPlantAndEquipment', 0)
+    free_cash_flow = operating_cf - abs(capex)  # capex is usually negative
+    metrics['free_cash_flow'] = free_cash_flow
+    
+    # Net Profit Margin
+    net_income = current_data.get('NetIncomeLoss', 0)
+    if revenue_current > 0:
+        net_margin = (net_income / revenue_current) * 100
+    else:
+        net_margin = 0
+    metrics['net_margin'] = net_margin
+    
+    # Return on Equity (ROE)
+    stockholders_equity = current_data.get('StockholdersEquity', 0)
+    if stockholders_equity > 0:
+        roe = (net_income / stockholders_equity) * 100
+    else:
+        roe = 0
+    metrics['roe'] = roe
+    
+    # Debt-to-Equity Ratio
+    total_debt = current_data.get('LongTermDebt', 0) + current_data.get('ShortTermBorrowings', 0)
+    if stockholders_equity > 0:
+        debt_to_equity = total_debt / stockholders_equity
+    else:
+        debt_to_equity = 0
+    metrics['debt_to_equity'] = debt_to_equity
+    
+    return {
+        "ticker": ticker.upper(),
+        "fiscal_year": fiscal_year,
+        "metrics": metrics
+    }

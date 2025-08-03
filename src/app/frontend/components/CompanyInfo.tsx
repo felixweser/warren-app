@@ -92,7 +92,7 @@ export default function CompanyInfo() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a]">
+        <div className="min-h-screen bg-[#1a1a1a]">
             {/* Sidebar for stock selection */}
             <Sidebar
                 selectedStocks={selectedStocks}

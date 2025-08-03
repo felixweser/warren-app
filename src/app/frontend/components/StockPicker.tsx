@@ -7,7 +7,7 @@ const companies: Company[] = [
     { name: "Yum! Brands (KFC, Taco Bell, Pizza Hut)", symbol: "YUM" },
     { name: "Restaurant Brands International (Burger King, Tim Hortons, Popeyes)", symbol: "QSR" },
     { name: "Domino's", symbol: "DPZ" },
-    { name: "Google (Alphabet Inc.)", symbol: "GOOG" },
+    { name: "Google (Alphabet Inc.)", symbol: "GOOGL" },
     { name: "Amazon", symbol: "AMZN" }
 ];
 
