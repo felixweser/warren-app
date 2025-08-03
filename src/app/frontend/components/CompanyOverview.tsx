@@ -1,6 +1,7 @@
 import FinancialMetricsTable from './FinancialMetricsTable';
 import FinancialTrends from './FinancialTrends';
 import CompanyComparisonTable from './CompanyComparisonTable';
+import StockNews from './StockNews';
 
 interface CompanyOverviewProps {
   currentStock?: any;
@@ -16,8 +17,13 @@ export default function CompanyOverview({ currentStock }: CompanyOverviewProps) 
         <FinancialTrends currentStock={currentStock} />
       </div>
       
-      {/* Bottom row with comparison table */}
+      {/* Middle row with comparison table */}
       <CompanyComparisonTable currentStock={currentStock} />
+      
+      {/* Bottom row with news section */}
+      <div className="flex justify-left items-start">
+        <StockNews currentStock={currentStock} />
+      </div>
     </div>
   );
 }

@@ -114,7 +114,7 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
 
   if (!currentStock?.symbol) {
     return (
-      <div className="w-full mt-8 p-6 bg-[#1a1a1a] border border-[#333333] rounded-2xl shadow-lg">
+      <div className="w-full mt-8 p-4 bg-[#1a1a1a] border border-[#333333] rounded-2xl shadow-lg">
         <h2 className="text-xl font-bold text-slate-50 mb-4">Company Comparison</h2>
         <div className="flex justify-center items-center h-32">
           <div className="text-slate-400">Select a company to view peer comparison</div>
@@ -124,10 +124,11 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
   }
 
   return (
-    <div className="w-full mt-8 p-6 bg-[#1a1a1a] border border-[#333333] rounded-2xl shadow-lg hover:border-[#7EE081] transition-all">
-      <h2 className="text-xl font-bold text-slate-50 mb-4">
+    <div className="w-full mt-4 bg-[#1a1a1a]">
+      <h2 className="text-xl font-bold text-slate-50 mb-4 px-4">
         Company Comparison - {currentStock.symbol} vs Peers
       </h2>
+      <div>
       
       {loading && (
         <div className="flex justify-center items-center h-32">
@@ -142,17 +143,17 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
       )}
       
       {!loading && !error && companyData.length > 0 && (
-        <div className="overflow-x-auto">
-          <table className="w-full border border-gray-200 rounded-xl overflow-hidden">
+        <div className="border border-[#333333] rounded-2xl shadow-lg overflow-x-auto">
+          <table className="w-full  rounded-xl overflow-hidden shadow-lg bg-[#2a2a2a]">
             <thead>
               <tr className="bg-[#2a2a2a]">
-                <th className="px-4 py-3 text-left text-sm font-semibold text-slate-50 border-b border-gray-600">
-                  Metric
+                <th className=" text-left p-4 text-sm font-semibold text-slate-50">
+                  
                 </th>
                 {companyData.map((company, index) => (
                   <th 
                     key={company.ticker} 
-                    className={`px-4 py-3 text-center text-sm font-semibold border-b border-gray-600 ${
+                    className={`px-4 py-3 text-center text-sm font-semibold  ${
                       index === 0 ? 'text-[#7EE081]' : 'text-slate-50'
                     }`}
                   >
@@ -165,9 +166,9 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
               </tr>
             </thead>
             <tbody>
-              {metrics.map((metric, metricIndex) => (
+              {metrics.map((metric) => (
                 <tr key={metric.key} className="hover:bg-[#333333] transition-colors">
-                  <td className="px-4 py-3 text-sm text-slate-50 font-medium border-b border-gray-700">
+                  <td className="px-4 py-3 text-sm text-slate-50 font-medium ">
                     {metric.label}
                   </td>
                   {companyData.map((company, companyIndex) => {
@@ -175,7 +176,7 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
                     return (
                       <td 
                         key={`${company.ticker}-${metric.key}`}
-                        className={`px-4 py-3 text-sm text-center border-b border-gray-700 ${
+                        className={`px-4 py-3 text-sm text-center ${
                           companyIndex === 0 ? 'font-semibold text-[#7EE081]' : 'text-slate-50'
                         }`}
                       >
@@ -196,9 +197,10 @@ export default function CompanyComparisonTable({ currentStock }: CompanyComparis
         </div>
       )}
       
-      <div className="mt-4 text-xs text-slate-400">
-        <span className="text-[#7EE081]">●</span> Selected Company
-        <span className="text-slate-50 ml-4">●</span> Peer Companies
+        <div className="mt-4 px-4 text-xs text-slate-50">
+          <span className="text-[#7EE081]">●</span> Selected Company
+          <span className="text-slate-50 ml-4">●</span> Peer Companies
+        </div>
       </div>
     </div>
   );

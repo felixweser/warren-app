@@ -20,6 +20,7 @@ export default function ContentTabs({ currentStock }: ContentTabsProps) {
         { id: 'balance' as TabType, label: 'Balance Sheet'},
         { id: 'cashflow' as TabType, label: 'Cash Flow' },
         { id: 'equity' as TabType, label: 'Equity' },
+        { id: 'company' as TabType, label: 'Company' },
     ];
 
     const renderTabContent = () => {
@@ -63,10 +64,10 @@ export default function ContentTabs({ currentStock }: ContentTabsProps) {
                         <button
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
-                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer transition border ${
+                            className={`flex items-center gap-2 px-3 py-1.5 rounded-lg cursor-pointer text-white transition border ${
                                 activeTab === tab.id
-                                    ? 'bg-[#333333] text-white border border-[#7EE081]'
-                                    : 'bg-[#1a1a1a] border border-[#333333] hover:bg-[#2a2a2a] text-[#666666] hover:text-white'
+                                    ? 'bg-[#333333] border border-[#7EE081]'
+                                    : 'bg-[#1a1a1a] border  border-[#333333] hover:bg-[#2a2a2a]'
                             }`}
                         >
                             <span className="font-medium text-sm">{tab.label}</span>
